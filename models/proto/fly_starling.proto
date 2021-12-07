@@ -120,10 +120,10 @@ message FetchTransLgsRequest {
 
 message FetchTransLgsRet {
   int64 total = 1;
-  repeated TransLgs list = 2;
+  repeated TransLg list = 2;
 }
 
-message TransLgs {
+message TransLg {
   string project_key = 1;
   string group_key = 2;
   string lang_key = 3;
@@ -173,7 +173,7 @@ message SaveOriginLgResponse {
 
 // swagger:model
 message SaveTransLgRequest {
-  TransLgs trans_lang = 1;
+  TransLg trans_lang = 1;
   string op_id = 2;
 }
 
@@ -193,6 +193,5 @@ message FetchTransLgRequest {
 // swagger:model
 message FetchTransLgResponse {
   BaseRet  base_ret = 1;
-  TransLgs   data = 2;
+  TransLg   data = 2;
 }
-

@@ -118,10 +118,10 @@ func FetchTransLgs(ctx context.Context, req *servbp.FetchTransLgsRequest) (*serv
 	return ret, nil
 }
 
-func FormatTransLgsRet(res []*models.StarlingTranslation) []*servbp.TransLgs {
-	ret := make([]*servbp.TransLgs, 0, len(res))
+func FormatTransLgsRet(res []*models.StarlingTranslation) []*servbp.TransLg {
+	ret := make([]*servbp.TransLg, 0, len(res))
 	for _, v := range res {
-		one := &servbp.TransLgs{
+		one := &servbp.TransLg{
 			ProjectKey:  v.ProjectKey,
 			GroupKey:    v.GroupKey,
 			Status:      v.Status,

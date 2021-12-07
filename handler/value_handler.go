@@ -10,7 +10,7 @@ import (
 
 var gsf singleflight.Group
 
-func FetchTransLg(ctx context.Context, req *servbp.FetchTransLgRequest) (*servbp.TransLgs, error) {
+func FetchTransLg(ctx context.Context, req *servbp.FetchTransLgRequest) (*servbp.TransLg, error) {
 	key := fmt.Sprintf("TSLG:%s_%s_%s_%s", req.ProjectKey, req.GroupKey, req.LangKey, req.Lang)
 	gRes, err, _ := gsf.Do(key, func() (interface{}, error) {
 		return models.GetStarlingTransLg(ctx, req.ProjectKey, req.GroupKey, req.LangKey, req.Lang)
@@ -22,8 +22,8 @@ func FetchTransLg(ctx context.Context, req *servbp.FetchTransLgRequest) (*servbp
 	return FormatConfigRet(res), nil
 }
 
-func FormatConfigRet(conf *models.StarlingTranslation) *servbp.TransLgs {
-	ret := &servbp.TransLgs{
+func FormatConfigRet(conf *models.StarlingTranslation) *servbp.TransLg {
+	ret := &servbp.TransLg{
 		ProjectKey:  conf.ProjectKey,
 		GroupKey:    conf.GroupKey,
 		Status:      conf.Status,
