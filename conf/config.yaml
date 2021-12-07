@@ -1,0 +1,18 @@
+host:
+  baidu_api: http://www.baidu.com
+
+db:
+  fcc_read:
+    host: localhost
+    port: 3306
+    username: root
+    password:
+    database: flytear_const_conf
+  fcc_write:
+    host: localhost
+    port: 3306
+    username: root
+    password:
+    database: flytear_const_conf
+
+redis:
