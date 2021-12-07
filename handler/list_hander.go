@@ -8,10 +8,10 @@ import (
 
 func FetchProjects(ctx context.Context, req *servbp.FetchProjectsRequest) (*servbp.FetchProjectsRet, error) {
 	filter := make(map[string]interface{})
-	if proKey, ok := req.Filter["project_key"]; ok{
+	if proKey, ok := req.Filter["project_key"]; ok {
 		filter["project_key"] = proKey
 	}
-	if proName, ok := req.Filter["project_name"]; ok{
+	if proName, ok := req.Filter["project_name"]; ok {
 		filter["project_name"] = proName
 	}
 	list, count, err := models.GetProjects(ctx, filter, int(req.Offset), int(req.Limit), "id")
@@ -41,10 +41,10 @@ func FormatProjectRetList(res []*models.StarlingProject) []*servbp.Project {
 
 func FetchGroups(ctx context.Context, req *servbp.FetchGroupsRequest) (*servbp.FetchGroupsRet, error) {
 	filter := make(map[string]interface{})
-	if groKey, ok := req.Filter["group_key"]; ok{
+	if groKey, ok := req.Filter["group_key"]; ok {
 		filter["group_key"] = groKey
 	}
-	if groName, ok := req.Filter["group_name"]; ok{
+	if groName, ok := req.Filter["group_name"]; ok {
 		filter["group_name"] = groName
 	}
 	list, count, err := models.GetGroups(ctx, req.ProjectKey, filter, int(req.Offset), int(req.Limit), "id")
@@ -75,7 +75,7 @@ func FormatGroupRetList(res []*models.StarlingGroup) []*servbp.Group {
 
 func FetchOriginLgs(ctx context.Context, req *servbp.FetchOriginLgsRequest) (*servbp.FetchOriginLgsRet, error) {
 	filter := make(map[string]interface{})
-	if confKey, ok := req.Filter["conf_key"]; ok{
+	if confKey, ok := req.Filter["conf_key"]; ok {
 		filter["conf_key"] = confKey
 	}
 	list, count, err := models.GetStarlingOriginLgs(ctx, req.ProjectKey, req.GroupKey, filter, int(req.Offset), int(req.Limit), "id")
@@ -93,9 +93,12 @@ func FormatOriginLgsRet(res []*models.StarlingOrigin) []*servbp.OriginLg {
 	ret := make([]*servbp.OriginLg, 0, len(res))
 	for _, v := range res {
 		one := &servbp.OriginLg{
-			ProjectKey:  v.ProjectKey,
-			GroupKey:    v.GroupKey,
-			Status:      v.Status,
+			ProjectKey: v.ProjectKey,
+			GroupKey:   v.GroupKey,
+			LangKey:    v.LangKey,
+			Lang:       v.Lang,
+			OriginText: v.OriginText,
+			Status:     v.Status,
 		}
 		ret = append(ret, one)
 	}
@@ -104,7 +107,7 @@ func FormatOriginLgsRet(res []*models.StarlingOrigin) []*servbp.OriginLg {
 
 func FetchTransLgs(ctx context.Context, req *servbp.FetchTransLgsRequest) (*servbp.FetchTransLgsRet, error) {
 	filter := make(map[string]interface{})
-	if confKey, ok := req.Filter["conf_key"]; ok{
+	if confKey, ok := req.Filter["conf_key"]; ok {
 		filter["conf_key"] = confKey
 	}
 	list, count, err := models.GetStarlingTransLgs(ctx, req.ProjectKey, req.GroupKey, req.LangKey, int(req.Offset), int(req.Limit), "id")
@@ -122,9 +125,12 @@ func FormatTransLgsRet(res []*models.StarlingTranslation) []*servbp.TransLg {
 	ret := make([]*servbp.TransLg, 0, len(res))
 	for _, v := range res {
 		one := &servbp.TransLg{
-			ProjectKey:  v.ProjectKey,
-			GroupKey:    v.GroupKey,
-			Status:      v.Status,
+			ProjectKey:    v.ProjectKey,
+			GroupKey:      v.GroupKey,
+			LangKey:       v.LangKey,
+			Lang:          v.Lang,
+			TranslateText: v.TranslateText,
+			Status:        v.Status,
 		}
 		ret = append(ret, one)
 	}

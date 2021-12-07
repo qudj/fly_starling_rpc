@@ -94,7 +94,7 @@ func GetProjects(ctx context.Context, filter map[string]interface{}, offset, lim
 		whereStr += " and project_name = ?"
 		whereArgs = append(whereArgs, v)
 	}
-	if err := config.StarlingReadDB.Table("fcc_project").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
+	if err := config.StarlingReadDB.Table("starling_project").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
 	}
@@ -114,7 +114,7 @@ func GetGroups(ctx context.Context, proKey string, filter map[string]interface{}
 		whereStr += " and group_name = ?"
 		whereArgs = append(whereArgs, v)
 	}
-	if err := config.StarlingReadDB.Table("fcc_group").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
+	if err := config.StarlingReadDB.Table("starling_group").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
 	}
@@ -141,7 +141,7 @@ func GetStarlingTransLgs(ctx context.Context, proKey, grKey, lgKey string, offse
 	var ret []*StarlingTranslation
 	var count int64
 	if err := config.StarlingReadDB.Table("starling_translation").WithContext(ctx).
-		Where("project_key = ? and group_key = ? lang_key = ?", proKey, grKey, lgKey).Debug().Count(&count).
+		Where("project_key = ? and group_key = ? and lang_key = ?", proKey, grKey, lgKey).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
 	}
