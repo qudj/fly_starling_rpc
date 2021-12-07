@@ -11,8 +11,8 @@ type Config struct {
 		BaiduApi string `mapstructure:"baidu_api"`
 	} `mapstructure:"host"`
 	DB struct {
-		FccRead DBConfig `mapstructure:"fcc_read"`
-		FccWrite     DBConfig `mapstructure:"fcc_write"`
+		StarlingRead DBConfig `mapstructure:"starling_read"`
+		StarlingWrite     DBConfig `mapstructure:"starling_write"`
 	} `mapstructure:"db"`
 	Redis struct {
 	} `mapstructure:"redis"`

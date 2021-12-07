@@ -50,7 +50,7 @@ type StarlingTranslation struct {
 	CreateTime int64  `json:"create_time"`
 }
 
-type FccHistoryLog struct {
+type StarlingHistoryLog struct {
 	Id          int64  `json:"id"`
 	Table       string `json:"table"`
 	ObjectKey   string `json:"object_key"`
@@ -77,8 +77,8 @@ func (StarlingTranslation) TableName() string {
 	return "starling_translation"
 }
 
-func (FccHistoryLog) TableName() string {
-	return "fcc_history_log"
+func (StarlingHistoryLog) TableName() string {
+	return "starling_history_log"
 }
 
 func GetProjects(ctx context.Context, filter map[string]interface{}, offset, limit int, orderBy string) ([]*StarlingProject, int64, error) {
@@ -94,7 +94,7 @@ func GetProjects(ctx context.Context, filter map[string]interface{}, offset, lim
 		whereStr += " and project_name = ?"
 		whereArgs = append(whereArgs, v)
 	}
-	if err := config.FccReadDB.Table("fcc_project").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
+	if err := config.StarlingReadDB.Table("fcc_project").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
 	}
@@ -114,7 +114,7 @@ func GetGroups(ctx context.Context, proKey string, filter map[string]interface{}
 		whereStr += " and group_name = ?"
 		whereArgs = append(whereArgs, v)
 	}
-	if err := config.FccReadDB.Table("fcc_group").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
+	if err := config.StarlingReadDB.Table("fcc_group").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
 	}
@@ -130,7 +130,7 @@ func GetStarlingOriginLgs(ctx context.Context, proKey, grKey string, filter map[
 		whereStr += " and lang_key = ?"
 		whereArgs = append(whereArgs, v)
 	}
-	if err := config.FccReadDB.Table("starling_origin").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
+	if err := config.StarlingReadDB.Table("starling_origin").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
 	}
@@ -140,7 +140,7 @@ func GetStarlingOriginLgs(ctx context.Context, proKey, grKey string, filter map[
 func GetStarlingTransLgs(ctx context.Context, proKey, grKey, lgKey string, offset, limit int, orderBy string) ([]*StarlingTranslation, int64, error) {
 	var ret []*StarlingTranslation
 	var count int64
-	if err := config.FccReadDB.Table("starling_translation").WithContext(ctx).
+	if err := config.StarlingReadDB.Table("starling_translation").WithContext(ctx).
 		Where("project_key = ? and group_key = ? lang_key = ?", proKey, grKey, lgKey).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
 		return nil, 0, err
@@ -149,35 +149,35 @@ func GetStarlingTransLgs(ctx context.Context, proKey, grKey, lgKey string, offse
 }
 
 func SaveProject(project *StarlingProject) error {
-	if err := config.FccReadDB.Save(project).Error; err != nil {
+	if err := config.StarlingWriteDB.Debug().Save(project).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func SaveGroup(group *StarlingGroup) error {
-	if err := config.FccReadDB.Save(group).Error; err != nil {
+	if err := config.StarlingWriteDB.Debug().Save(group).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func SaveStarlingOriginLg(origin *StarlingOrigin) error {
-	if err := config.FccReadDB.Save(origin).Error; err != nil {
+	if err := config.StarlingWriteDB.Debug().Save(origin).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func SaveStarlingTransLg(trans *StarlingTranslation) error {
-	if err := config.FccReadDB.Save(trans).Error; err != nil {
+	if err := config.StarlingWriteDB.Debug().Save(trans).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func SaveHistory(history *FccHistoryLog) error {
-	if err := config.FccReadDB.Save(history).Error; err != nil {
+func SaveHistory(history *StarlingHistoryLog) error {
+	if err := config.StarlingWriteDB.Debug().Save(history).Error; err != nil {
 		return err
 	}
 	return nil
@@ -185,7 +185,7 @@ func SaveHistory(history *FccHistoryLog) error {
 
 func GetStarlingTransLg(ctx context.Context, proKey, groKey, lgKey, lang string) (*StarlingTranslation, error) {
 	conf := &StarlingTranslation{}
-	if err := config.FccReadDB.WithContext(ctx).
+	if err := config.StarlingReadDB.WithContext(ctx).Debug().
 		Where("project_key = ? and group_key = ? and lang_key = ?", proKey, groKey, lgKey, lang).First(conf).Error; err != nil {
 		return nil, err
 	}

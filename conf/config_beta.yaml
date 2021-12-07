@@ -2,17 +2,17 @@ host:
   baidu_api: http://www.baidu.com
 
 db:
-  fcc_read:
+  starling_read:
     host: localhost
     port: 3306
     username: root
     password:
-    database: flytear_const_conf
-  fcc_write:
+    database: flytear_starling
+  starling_write:
     host: localhost
     port: 3306
     username: root
     password:
-    database: flytear_const_conf
+    database: flytear_starling
 
 redis:

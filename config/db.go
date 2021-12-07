@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-var FccReadDB *gorm.DB
-var FccWriteDB *gorm.DB
+var StarlingReadDB *gorm.DB
+var StarlingWriteDB *gorm.DB
 
 func openConn(dbConfig *DBConfig, maxOpenConns int, maxIdleConns int) *sql.DB {
 	db, err := sql.Open("mysql",
@@ -19,11 +19,9 @@ func openConn(dbConfig *DBConfig, maxOpenConns int, maxIdleConns int) *sql.DB {
 			dbConfig.Port,
 			dbConfig.Database,
 		))
-
 	if err != nil {
 		panic(err)
 	}
-
 	db.SetMaxOpenConns(maxOpenConns)
 	db.SetMaxIdleConns(maxIdleConns)
 	return db
@@ -39,6 +37,6 @@ func openDB(conn *sql.DB) *gorm.DB {
 }
 
 func InitDb() {
-	FccReadDB = openDB(openConn(&Global.DB.FccRead, 100, 100))
-	FccWriteDB = openDB(openConn(&Global.DB.FccWrite, 10, 10))
+	StarlingReadDB = openDB(openConn(&Global.DB.StarlingRead, 100, 100))
+	StarlingWriteDB = openDB(openConn(&Global.DB.StarlingWrite, 10, 10))
 }

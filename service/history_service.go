@@ -11,7 +11,7 @@ func SaveHistory(pre, cur interface{}, table, obKey, obType, opId string) error 
 	historyByte, _ := json.Marshal(pre)
 	changeByte, _ := json.Marshal(cur)
 	curTime := time.Now().Unix()
-	history := models.FccHistoryLog{
+	history := models.StarlingHistoryLog{
 		Table:       table,
 		ObjectKey:   obKey,
 		ObjectType:  obType,
