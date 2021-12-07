@@ -183,11 +183,11 @@ func SaveHistory(history *StarlingHistoryLog) error {
 	return nil
 }
 
-func GetStarlingTransLg(ctx context.Context, proKey, groKey, lgKey, lang string) (*StarlingTranslation, error) {
-	conf := &StarlingTranslation{}
+func GetStarlingTransLgsByKey(ctx context.Context, proKey, groKey, lang string, lgKeys []string) ([]*StarlingTranslation, error) {
+	rets := make([]*StarlingTranslation, 0)
 	if err := config.StarlingReadDB.WithContext(ctx).Debug().
-		Where("project_key = ? and group_key = ? and lang_key = ?", proKey, groKey, lgKey, lang).First(conf).Error; err != nil {
+		Where("project_key = ? and group_key = ? and lang_key in (?) and lang = ?", proKey, groKey, lgKeys, lang).Find(&rets).Error; err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return rets, nil
 }

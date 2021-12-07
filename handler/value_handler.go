@@ -6,27 +6,21 @@ import (
 	"github.com/qudj/fly_starling_rpc/models"
 	servbp "github.com/qudj/fly_starling_rpc/models/fly_starling_serv"
 	"golang.org/x/sync/singleflight"
+	"sort"
+	"strings"
 )
 
 var gsf singleflight.Group
 
-func FetchTransLg(ctx context.Context, req *servbp.FetchTransLgRequest) (*servbp.TransLg, error) {
-	key := fmt.Sprintf("TSLG:%s_%s_%s_%s", req.ProjectKey, req.GroupKey, req.LangKey, req.Lang)
+func FetchTransLgsByKey(ctx context.Context, req *servbp.FetchTransLgsByKeyRequest) ([]*servbp.TransLg, error) {
+	sort.Strings(req.LangKeys)
+	key := fmt.Sprintf("TSLG:%s_%s_%s_%s", req.ProjectKey, req.GroupKey, strings.Join(req.LangKeys, "|"), req.Lang)
 	gRes, err, _ := gsf.Do(key, func() (interface{}, error) {
-		return models.GetStarlingTransLg(ctx, req.ProjectKey, req.GroupKey, req.LangKey, req.Lang)
+		return models.GetStarlingTransLgsByKey(ctx, req.ProjectKey, req.GroupKey, req.Lang, req.LangKeys)
 	})
 	if err != nil {
 		return nil, err
 	}
-	res := gRes.(*models.StarlingTranslation)
-	return FormatConfigRet(res), nil
-}
-
-func FormatConfigRet(conf *models.StarlingTranslation) *servbp.TransLg {
-	ret := &servbp.TransLg{
-		ProjectKey:  conf.ProjectKey,
-		GroupKey:    conf.GroupKey,
-		Status:      conf.Status,
-	}
-	return ret
+	res := gRes.([]*models.StarlingTranslation)
+	return FormatTransLgsRet(res), nil
 }

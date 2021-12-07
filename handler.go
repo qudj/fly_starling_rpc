@@ -123,11 +123,11 @@ func (f StarlingService) SaveTransLg(ctx context.Context, req *servbp.SaveTransL
 	return ret, nil
 }
 
-func (f StarlingService) FetchTransLg(ctx context.Context, req *servbp.FetchTransLgRequest) (*servbp.FetchTransLgResponse, error) {
-	ret := &servbp.FetchTransLgResponse{
+func (f StarlingService) FetchTransLgsByKey(ctx context.Context, req *servbp.FetchTransLgsByKeyRequest) (*servbp.FetchTransLgsByKeyResponse, error) {
+	ret := &servbp.FetchTransLgsByKeyResponse{
 		BaseRet: &servbp.BaseRet{},
 	}
-	value, err := handler.FetchTransLg(ctx, req)
+	value, err := handler.FetchTransLgsByKey(ctx, req)
 	if err != nil {
 		ret.BaseRet.Code = 400
 		ret.BaseRet.Msg = err.Error()
