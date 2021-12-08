@@ -3,6 +3,7 @@ package middlewares
 import (
 	"context"
 	"encoding/json"
+	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"
 	"log"
@@ -15,7 +16,11 @@ func UnaryServerInterceptor(ctx context.Context, req interface{}, info *grpc.Una
 	remoteAddr := remote.Addr.String()
 	pos := strings.LastIndex(info.FullMethod, "/") + 1
 	method := info.FullMethod[pos:]
-
+	traceId, ok := ctx.Value("trace_id").(string)
+	if !ok {
+		traceId = uuid.NewV4().String()
+		ctx = context.WithValue(ctx, "trace_id", traceId)
+	}
 	in, _ := json.Marshal(req)
 	inStr := string(in)
 
@@ -24,7 +29,8 @@ func UnaryServerInterceptor(ctx context.Context, req interface{}, info *grpc.Una
 		out, _ := json.Marshal(resp)
 		outStr := string(out)
 		duration := int64(time.Since(start) / time.Millisecond)
-		log.Println(" ip:", remoteAddr, " method:", method, " in:", inStr, " out:", outStr, " err:", err, " duration/ms:", duration)
+
+		log.Println(" trace_id:", traceId, " ip:", remoteAddr, " method:", method, " in:", inStr, " out:", outStr, " err:", err, " duration/ms:", duration)
 		if err != nil {
 			log.Fatal()
 		}

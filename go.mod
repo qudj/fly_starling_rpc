@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/gogo/protobuf v1.3.2
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.9.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	google.golang.org/grpc v1.42.0
