@@ -33,7 +33,7 @@ func SaveProject(ctx context.Context, req *servbp.SaveProjectRequest) error {
 	if err := models.SaveProject(ctx, cur); err != nil {
 		return err
 	}
-	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
 	return nil
 }
 
@@ -96,7 +96,7 @@ func SaveGroup(ctx context.Context, req *servbp.SaveGroupRequest) error {
 	if err := models.SaveGroup(ctx, cur); err != nil {
 		return err
 	}
-	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
 	return nil
 }
 
@@ -165,7 +165,7 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 
 	go AutoSetTransLg(cur)
 
-	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
 	return nil
 }
 
@@ -253,7 +253,7 @@ func SaveTransLg(ctx context.Context, req *servbp.SaveTransLgRequest) error {
 	if err := models.SaveStarlingTransLg(ctx, cur); err != nil {
 		return err
 	}
-	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
 	return nil
 }
 

@@ -1,13 +1,14 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/qudj/fly_starling_rpc/models"
 	"time"
 )
 
-func SaveHistory(pre, cur interface{}, table, obKey, obType, opId string) error {
+func SaveHistory(ctx context.Context, pre, cur interface{}, table, obKey, obType, opId string) error {
 	historyByte, _ := json.Marshal(pre)
 	changeByte, _ := json.Marshal(cur)
 	curTime := time.Now().Unix()
@@ -20,7 +21,7 @@ func SaveHistory(pre, cur interface{}, table, obKey, obType, opId string) error 
 		HistoryData: string(historyByte),
 		CreateTime:  curTime,
 	}
-	if err := models.SaveHistory(&history); err != nil {
+	if err := models.SaveHistory(ctx, &history); err != nil {
 		fmt.Println(fmt.Sprintf("save histroy error=%v", err))
 		return err
 	}
