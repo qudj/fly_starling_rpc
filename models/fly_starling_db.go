@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"github.com/qudj/fly_lib/tools"
 	"github.com/qudj/fly_starling_rpc/config"
 )
 
@@ -96,6 +97,7 @@ func GetProjects(ctx context.Context, filter map[string]interface{}, offset, lim
 	}
 	if err := config.StarlingReadDB.Table("starling_project").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
+		tools.LogCtxError(ctx, "GetProjects error=%v", err)
 		return nil, 0, err
 	}
 	return ret, count, nil
@@ -116,6 +118,7 @@ func GetGroups(ctx context.Context, proKey string, filter map[string]interface{}
 	}
 	if err := config.StarlingReadDB.Table("starling_group").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
+		tools.LogCtxError(ctx, "GetGroups error=%v", err)
 		return nil, 0, err
 	}
 	return ret, count, nil
@@ -132,6 +135,7 @@ func GetStarlingOriginLgs(ctx context.Context, proKey, grKey string, filter map[
 	}
 	if err := config.StarlingReadDB.Table("starling_origin").WithContext(ctx).Where(whereStr, whereArgs...).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
+		tools.LogCtxError(ctx, "GetStarlingOriginLgs error=%v", err)
 		return nil, 0, err
 	}
 	return ret, count, nil
@@ -143,41 +147,47 @@ func GetStarlingTransLgs(ctx context.Context, proKey, grKey, lgKey string, offse
 	if err := config.StarlingReadDB.Table("starling_translation").WithContext(ctx).
 		Where("project_key = ? and group_key = ? and lang_key = ?", proKey, grKey, lgKey).Debug().Count(&count).
 		Order(orderBy).Offset(offset).Limit(limit).Find(&ret).Error; err != nil {
+		tools.LogCtxError(ctx, "GetStarlingTransLgs error=%v", err)
 		return nil, 0, err
 	}
 	return ret, count, nil
 }
 
-func SaveProject(project *StarlingProject) error {
+func SaveProject(ctx context.Context, project *StarlingProject) error {
 	if err := config.StarlingWriteDB.Debug().Save(project).Error; err != nil {
+		tools.LogCtxError(ctx, "SaveProject error=%v", err)
 		return err
 	}
 	return nil
 }
 
-func SaveGroup(group *StarlingGroup) error {
+func SaveGroup(ctx context.Context, group *StarlingGroup) error {
 	if err := config.StarlingWriteDB.Debug().Save(group).Error; err != nil {
+		tools.LogCtxError(ctx, "SaveGroup error=%v", err)
 		return err
 	}
 	return nil
 }
 
-func SaveStarlingOriginLg(origin *StarlingOrigin) error {
+func SaveStarlingOriginLg(ctx context.Context, origin *StarlingOrigin) error {
 	if err := config.StarlingWriteDB.Debug().Save(origin).Error; err != nil {
+		tools.LogCtxError(ctx, "SaveStarlingOriginLg error=%v", err)
 		return err
 	}
 	return nil
 }
 
-func SaveStarlingTransLg(trans *StarlingTranslation) error {
+func SaveStarlingTransLg(ctx context.Context, trans *StarlingTranslation) error {
 	if err := config.StarlingWriteDB.Debug().Save(trans).Error; err != nil {
+		tools.LogCtxError(ctx, "SaveStarlingTransLg error=%v", err)
 		return err
 	}
 	return nil
 }
 
-func SaveHistory(history *StarlingHistoryLog) error {
+func SaveHistory(ctx context.Context, history *StarlingHistoryLog) error {
 	if err := config.StarlingWriteDB.Debug().Save(history).Error; err != nil {
+		tools.LogCtxError(ctx, "SaveHistory error=%v", err)
 		return err
 	}
 	return nil
@@ -187,6 +197,7 @@ func GetStarlingTransLgsByKey(ctx context.Context, proKey, groKey, lang string, 
 	rets := make([]*StarlingTranslation, 0)
 	if err := config.StarlingReadDB.WithContext(ctx).Debug().
 		Where("project_key = ? and group_key = ? and lang_key in (?) and lang = ?", proKey, groKey, lgKeys, lang).Find(&rets).Error; err != nil {
+		tools.LogCtxError(ctx, "GetStarlingTransLgsByKey error=%v", err)
 		return nil, err
 	}
 	return rets, nil

@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/gogo/protobuf v1.3.2
+	github.com/qudj/fly_lib v0.0.0-20211208144218-60747a5810f2
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.9.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
@@ -23,7 +24,6 @@ require (
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.2 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
-	github.com/qudj/fly_lib v0.0.0-20211208061117-97556541bd37 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

@@ -252,6 +252,10 @@ github.com/posener/complete v1.2.3/go.mod h1:WZIdtGGp+qx0sLrYKtIRAruyNpv6hFCicSg
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/qudj/fly_lib v0.0.0-20211208061117-97556541bd37 h1:DREiopxToeyg94rPcm8VmA9HWs5QnzIWGZM2SuIRoPg=
 github.com/qudj/fly_lib v0.0.0-20211208061117-97556541bd37/go.mod h1:4YZuyql3Ag17Y7BxyqakYyKg/u5EwEahRtbhkgXjF7o=
+github.com/qudj/fly_lib v0.0.0-20211208140640-6c685ef74975 h1:4b3J1W+1qZMfzRbtYcpfnDjE6kG2EDTLtmB/FUdIX/c=
+github.com/qudj/fly_lib v0.0.0-20211208140640-6c685ef74975/go.mod h1:4YZuyql3Ag17Y7BxyqakYyKg/u5EwEahRtbhkgXjF7o=
+github.com/qudj/fly_lib v0.0.0-20211208144218-60747a5810f2 h1:ulUdfLAitZ2LY/ij8u6GFpA3TFUki/3WDLbh8R9ySTE=
+github.com/qudj/fly_lib v0.0.0-20211208144218-60747a5810f2/go.mod h1:4YZuyql3Ag17Y7BxyqakYyKg/u5EwEahRtbhkgXjF7o=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb6uqfes/u+d4ooFouqFdy9/2g9QGwK3SQygK0Ts=

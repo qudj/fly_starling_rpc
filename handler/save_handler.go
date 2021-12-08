@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/qudj/fly_lib/tools"
 	"github.com/qudj/fly_starling_rpc/config"
 	"github.com/qudj/fly_starling_rpc/models"
 	servbp "github.com/qudj/fly_starling_rpc/models/fly_starling_serv"
@@ -20,15 +20,17 @@ func SaveProject(ctx context.Context, req *servbp.SaveProjectRequest) error {
 	objectType := "update"
 	if err := config.StarlingWriteDB.WithContext(ctx).Debug().Where("project_key = ?", req.Project.ProjectKey).Last(pre).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
+			tools.LogCtxError(ctx, "SaveProject get project error=%v", err)
 			return err
 		}
 		objectType = "add"
 	}
 	cur, err := GetCurProject(pre, req)
 	if err != nil {
+		tools.LogCtxError(ctx, "SaveProject GetCurProject error=%v", err)
 		return err
 	}
-	if err := models.SaveProject(cur); err != nil {
+	if err := models.SaveProject(ctx, cur); err != nil {
 		return err
 	}
 	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
@@ -81,15 +83,17 @@ func SaveGroup(ctx context.Context, req *servbp.SaveGroupRequest) error {
 	objectType := "update"
 	if err := config.StarlingWriteDB.WithContext(ctx).Where("project_key = ? and group_key = ?", req.Group.ProjectKey, req.Group.GroupKey).Last(pre).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
+			tools.LogCtxError(ctx, "SaveGroup get group error=%v", err)
 			return err
 		}
 		objectType = "add"
 	}
 	cur, err := GetCurGroup(pre, req)
 	if err != nil {
+		tools.LogCtxError(ctx, "SaveGroup GetCurGroup error=%v", err)
 		return err
 	}
-	if err := models.SaveGroup(cur); err != nil {
+	if err := models.SaveGroup(ctx, cur); err != nil {
 		return err
 	}
 	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
@@ -137,6 +141,7 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 	}
 	gro := &models.StarlingGroup{}
 	if err := config.StarlingWriteDB.WithContext(ctx).Where("project_key = ? and group_key = ?", req.OriginLang.ProjectKey, req.OriginLang.GroupKey).Last(gro).Error; err != nil {
+		tools.LogCtxError(ctx, "SaveOriginLg get group error=%v", err)
 		return err
 	}
 
@@ -145,6 +150,7 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 	if err := config.StarlingWriteDB.WithContext(ctx).
 		Where("project_key = ? and group_key = ? and lang_key = ?", req.OriginLang.ProjectKey, req.OriginLang.GroupKey, req.OriginLang.LangKey).Last(pre).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
+			tools.LogCtxError(ctx, "SaveOriginLg get origin lg error=%v", err)
 			return err
 		}
 		objectType = "add"
@@ -153,7 +159,7 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 	if err != nil {
 		return err
 	}
-	if err := models.SaveStarlingOriginLg(cur); err != nil {
+	if err := models.SaveStarlingOriginLg(ctx, cur); err != nil {
 		return err
 	}
 
@@ -169,6 +175,7 @@ func AutoSetTransLg(origin *models.StarlingOrigin) {
 	if err := config.StarlingWriteDB.WithContext(ctx).
 		Where("project_key = ? and group_key = ? and lang_key = ? and lang = ?", origin.ProjectKey, origin.GroupKey, origin.LangKey, origin.Lang).Last(cur).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
+			tools.LogCtxError(ctx, "AutoSetTransLg get origin lg error=%v, originId=%v", err, origin.Id)
 			return
 		}
 	}
@@ -182,8 +189,8 @@ func AutoSetTransLg(origin *models.StarlingOrigin) {
 	cur.Lang = origin.Lang
 	cur.TranslateText = origin.OriginText
 	cur.UpdateTime = time.Now().Unix()
-	if err := models.SaveStarlingTransLg(cur); err != nil {
-		fmt.Println(err.Error())
+	if err := models.SaveStarlingTransLg(ctx, cur); err != nil {
+		tools.LogCtxError(ctx, "AutoSetTransLg get origin lg error=%v, originId=%v", err, origin.Id)
 		return
 	}
 	return
@@ -234,6 +241,7 @@ func SaveTransLg(ctx context.Context, req *servbp.SaveTransLgRequest) error {
 	if err := config.StarlingWriteDB.WithContext(ctx).
 		Where("project_key = ? and group_key = ? and lang_key = ? and lang = ?", req.TransLang.ProjectKey, req.TransLang.GroupKey, req.TransLang.LangKey, req.TransLang.Lang).Last(pre).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
+			tools.LogCtxError(ctx, "SaveTransLg get trans lg error=%v", err)
 			return err
 		}
 		objectType = "add"
@@ -242,7 +250,7 @@ func SaveTransLg(ctx context.Context, req *servbp.SaveTransLgRequest) error {
 	if err != nil {
 		return err
 	}
-	if err := models.SaveStarlingTransLg(cur); err != nil {
+	if err := models.SaveStarlingTransLg(ctx, cur); err != nil {
 		return err
 	}
 	_ = service.SaveHistory(pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
