@@ -16,6 +16,9 @@ func SaveProject(ctx context.Context, req *servbp.SaveProjectRequest) error {
 	if req.Project == nil {
 		return errors.New("param error")
 	}
+	if req.SaveMode == servbp.SaveMode_UNKNOWN {
+		return errors.New("save mode error")
+	}
 	pre := &models.StarlingProject{}
 	objectType := "update"
 	if err := config.StarlingWriteDB.WithContext(ctx).Debug().Where("project_key = ?", req.Project.ProjectKey).Last(pre).Error; err != nil {
@@ -24,6 +27,16 @@ func SaveProject(ctx context.Context, req *servbp.SaveProjectRequest) error {
 			return err
 		}
 		objectType = "add"
+	}
+	if req.SaveMode == servbp.SaveMode_ADD {
+		if pre != nil && pre.Id != 0 {
+			return errors.New("has project")
+		}
+	}
+	if req.SaveMode == servbp.SaveMode_UPDATE {
+		if pre == nil || pre.Id == 0 {
+			return errors.New("not found project")
+		}
 	}
 	cur, err := GetCurProject(pre, req)
 	if err != nil {
@@ -75,6 +88,9 @@ func SaveGroup(ctx context.Context, req *servbp.SaveGroupRequest) error {
 	if req.Group == nil {
 		return errors.New("param error")
 	}
+	if req.SaveMode == servbp.SaveMode_UNKNOWN {
+		return errors.New("save mode error")
+	}
 	pro := &models.StarlingProject{}
 	if err := config.StarlingWriteDB.WithContext(ctx).Where("project_key = ?", req.Group.ProjectKey).Last(pro).Error; err != nil {
 		return err
@@ -87,6 +103,16 @@ func SaveGroup(ctx context.Context, req *servbp.SaveGroupRequest) error {
 			return err
 		}
 		objectType = "add"
+	}
+	if req.SaveMode == servbp.SaveMode_ADD {
+		if pre != nil && pre.Id != 0 {
+			return errors.New("has group")
+		}
+	}
+	if req.SaveMode == servbp.SaveMode_UPDATE {
+		if pre == nil || pre.Id == 0 {
+			return errors.New("not found group")
+		}
 	}
 	cur, err := GetCurGroup(pre, req)
 	if err != nil {
@@ -139,6 +165,9 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 	if req.OriginLang == nil {
 		return errors.New("param error")
 	}
+	if req.SaveMode == servbp.SaveMode_UNKNOWN {
+		return errors.New("save mode error")
+	}
 	gro := &models.StarlingGroup{}
 	if err := config.StarlingWriteDB.WithContext(ctx).Where("project_key = ? and group_key = ?", req.OriginLang.ProjectKey, req.OriginLang.GroupKey).Last(gro).Error; err != nil {
 		tools.LogCtxError(ctx, "SaveOriginLg get group error=%v", err)
@@ -154,6 +183,16 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 			return err
 		}
 		objectType = "add"
+	}
+	if req.SaveMode == servbp.SaveMode_ADD {
+		if pre != nil && pre.Id != 0 {
+			return errors.New("has origin lang")
+		}
+	}
+	if req.SaveMode == servbp.SaveMode_UPDATE {
+		if pre == nil || pre.Id == 0 {
+			return errors.New("not found origin lang")
+		}
 	}
 	cur, err := GetCurOriginLg(pre, req)
 	if err != nil {
@@ -232,6 +271,9 @@ func SaveTransLg(ctx context.Context, req *servbp.SaveTransLgRequest) error {
 	if req.TransLang == nil {
 		return errors.New("param error")
 	}
+	if req.SaveMode == servbp.SaveMode_UNKNOWN {
+		return errors.New("save mode error")
+	}
 	ori := &models.StarlingOrigin{}
 	if err := config.StarlingWriteDB.WithContext(ctx).Where("project_key = ? and group_key = ? and lang_key", req.TransLang.ProjectKey, req.TransLang.GroupKey, req.TransLang.LangKey).Last(ori).Error; err != nil {
 		return err
@@ -245,6 +287,16 @@ func SaveTransLg(ctx context.Context, req *servbp.SaveTransLgRequest) error {
 			return err
 		}
 		objectType = "add"
+	}
+	if req.SaveMode == servbp.SaveMode_ADD {
+		if pre != nil && pre.Id != 0 {
+			return errors.New("has translation")
+		}
+	}
+	if req.SaveMode == servbp.SaveMode_UPDATE {
+		if pre == nil || pre.Id == 0 {
+			return errors.New("not found translation")
+		}
 	}
 	cur, err := GetCurTransLg(pre, req)
 	if err != nil {
