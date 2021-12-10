@@ -33,6 +33,10 @@ func FormatProjectRetList(res []*models.StarlingProject) []*servbp.Project {
 			ProjectName: v.ProjectName,
 			Description: v.Description,
 			Status:      v.Status,
+			OpId:        v.OpId,
+			OpName:      v.OpName,
+			CreateTime:  v.CreateTime,
+			UpdateTime:  v.UpdateTime,
 		}
 		ret = append(ret, one)
 	}
@@ -67,6 +71,10 @@ func FormatGroupRetList(res []*models.StarlingGroup) []*servbp.Group {
 			GroupName:   v.GroupName,
 			Description: v.Description,
 			Status:      v.Status,
+			OpId:        v.OpId,
+			OpName:      v.OpName,
+			CreateTime:  v.CreateTime,
+			UpdateTime:  v.UpdateTime,
 		}
 		ret = append(ret, one)
 	}
@@ -99,6 +107,10 @@ func FormatOriginLgsRet(res []*models.StarlingOrigin) []*servbp.OriginLg {
 			Lang:       v.Lang,
 			OriginText: v.OriginText,
 			Status:     v.Status,
+			OpId:        v.OpId,
+			OpName:      v.OpName,
+			CreateTime:  v.CreateTime,
+			UpdateTime:  v.UpdateTime,
 		}
 		ret = append(ret, one)
 	}
@@ -131,6 +143,10 @@ func FormatTransLgsRet(res []*models.StarlingTranslation) []*servbp.TransLg {
 			Lang:          v.Lang,
 			TranslateText: v.TranslateText,
 			Status:        v.Status,
+			OpId:        v.OpId,
+			OpName:      v.OpName,
+			CreateTime:  v.CreateTime,
+			UpdateTime:  v.UpdateTime,
 		}
 		ret = append(ret, one)
 	}

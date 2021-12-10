@@ -12,6 +12,8 @@ type StarlingProject struct {
 	ProjectName string `json:"project_name"`
 	Description string `json:"description"`
 	Status      int64  `json:"status"`
+	OpId        string `json:"op_id"`
+	OpName      string `json:"op_name"`
 	UpdateTime  int64  `json:"update_time"`
 	CreateTime  int64  `json:"create_time"`
 }
@@ -23,32 +25,38 @@ type StarlingGroup struct {
 	GroupName   string `json:"group_name"`
 	Description string `json:"description"`
 	Status      int64  `json:"status"`
+	OpId        string `json:"op_id"`
+	OpName      string `json:"op_name"`
 	UpdateTime  int64  `json:"update_time"`
 	CreateTime  int64  `json:"create_time"`
 }
 
 type StarlingOrigin struct {
-	Id            int64  `json:"id"`
-	ProjectKey    string `json:"project_key"`
-	GroupKey      string `json:"group_key"`
-	LangKey       string `json:"lang_key"`
-	Lang          string `json:"lang"`
-	OriginText string `json:"origin_text"`
-	Status        int64  `json:"status"`
-	UpdateTime    int64  `json:"update_time"`
-	CreateTime    int64  `json:"create_time"`
-}
-
-type StarlingTranslation struct {
 	Id         int64  `json:"id"`
 	ProjectKey string `json:"project_key"`
 	GroupKey   string `json:"group_key"`
 	LangKey    string `json:"lang_key"`
 	Lang       string `json:"lang"`
-	TranslateText string `json:"translate_text"`
+	OriginText string `json:"origin_text"`
 	Status     int64  `json:"status"`
+	OpId       string `json:"op_id"`
+	OpName     string `json:"op_name"`
 	UpdateTime int64  `json:"update_time"`
 	CreateTime int64  `json:"create_time"`
+}
+
+type StarlingTranslation struct {
+	Id            int64  `json:"id"`
+	ProjectKey    string `json:"project_key"`
+	GroupKey      string `json:"group_key"`
+	LangKey       string `json:"lang_key"`
+	Lang          string `json:"lang"`
+	TranslateText string `json:"translate_text"`
+	Status        int64  `json:"status"`
+	OpId          string `json:"op_id"`
+	OpName        string `json:"op_name"`
+	UpdateTime    int64  `json:"update_time"`
+	CreateTime    int64  `json:"create_time"`
 }
 
 type StarlingHistoryLog struct {

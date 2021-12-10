@@ -46,7 +46,7 @@ func SaveProject(ctx context.Context, req *servbp.SaveProjectRequest) error {
 	if err := models.SaveProject(ctx, cur); err != nil {
 		return err
 	}
-	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, cur.OpId)
 	return nil
 }
 
@@ -80,6 +80,8 @@ func GetCurProject(pre *models.StarlingProject, req *servbp.SaveProjectRequest) 
 	if req.Project.Status != 0 {
 		cur.Status = req.Project.Status
 	}
+	cur.OpId = req.Project.OpId
+	cur.OpName = req.Project.OpName
 	cur.UpdateTime = curTime
 	return cur, nil
 }
@@ -122,7 +124,7 @@ func SaveGroup(ctx context.Context, req *servbp.SaveGroupRequest) error {
 	if err := models.SaveGroup(ctx, cur); err != nil {
 		return err
 	}
-	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, cur.OpId)
 	return nil
 }
 
@@ -157,6 +159,8 @@ func GetCurGroup(pre *models.StarlingGroup, req *servbp.SaveGroupRequest) (*mode
 	if req.Group.Status != 0 {
 		cur.Status = req.Group.Status
 	}
+	cur.OpId = req.Group.OpId
+	cur.OpName = req.Group.OpName
 	cur.UpdateTime = curTime
 	return cur, nil
 }
@@ -204,7 +208,7 @@ func SaveOriginLg(ctx context.Context, req *servbp.SaveOriginLgRequest) error {
 
 	go AutoSetTransLg(cur)
 
-	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, cur.OpId)
 	return nil
 }
 
@@ -263,6 +267,8 @@ func GetCurOriginLg(pre *models.StarlingOrigin, req *servbp.SaveOriginLgRequest)
 	if req.OriginLang.OriginText != "" {
 		cur.OriginText = req.OriginLang.OriginText
 	}
+	cur.OpId = req.OriginLang.OpId
+	cur.OpName = req.OriginLang.OpName
 	cur.UpdateTime = curTime
 	return cur, nil
 }
@@ -305,7 +311,7 @@ func SaveTransLg(ctx context.Context, req *servbp.SaveTransLgRequest) error {
 	if err := models.SaveStarlingTransLg(ctx, cur); err != nil {
 		return err
 	}
-	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, req.OpId)
+	_ = service.SaveHistory(ctx, pre, cur, cur.TableName(), cur.ProjectKey, objectType, cur.OpId)
 	return nil
 }
 
@@ -334,6 +340,8 @@ func GetCurTransLg(pre *models.StarlingTranslation, req *servbp.SaveTransLgReque
 	if req.TransLang.TranslateText != "" {
 		cur.TranslateText = req.TransLang.TranslateText
 	}
+	cur.OpId = req.TransLang.OpId
+	cur.OpName = req.TransLang.OpName
 	cur.UpdateTime = curTime
 	return cur, nil
 }
